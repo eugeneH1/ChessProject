@@ -26,6 +26,7 @@ public class WindowManager {
         this.height = height;
         this.vSync = vSync;
         projectionMatrix = new Matrix4f();
+        this.window = window;
     }
 
     public boolean isResize() {
@@ -64,13 +65,14 @@ public class WindowManager {
             width = 100;
             height = 100;
             GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, 1); // TRUE
-            maximised = true;
+            maximised = false;
         }
         window = GLFW.glfwCreateWindow(width, height, title, MemoryUtil.NULL, MemoryUtil.NULL);
         if(window == MemoryUtil.NULL) {
             throw new RuntimeException("Failed to create window");
         }
-        
+
+
         GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
             this.width = width;
             this.height = height;
@@ -98,9 +100,10 @@ public class WindowManager {
         GLFW.glfwShowWindow(window);
 
         GL.createCapabilities();
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearColor(0.0f, 0.2f, 0.6f, 0.0f);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_STENCIL_TEST);
+        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
 
     }
