@@ -1,20 +1,22 @@
-package chess;
+package test;
 
-import chess.core.EngineManager;
-import chess.core.WindowManager;
-import chess.core.utils.Consts;
-import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.Configuration;
+import core.EngineManager;
+import core.WindowManager;
+import core.utils.Consts;
 
 public class Launcher {
 
     private static WindowManager window;
-    private static EngineManager engine;
+    private static TestGame game;
+
+    public static TestGame getGame() {
+        return game;
+    }
 
     public static void main(String[] args) {
         window = new WindowManager(Consts.TITLE, 1600, 900, false);
-        engine = new EngineManager();
+        game = new TestGame();
+        EngineManager engine = new EngineManager();
 
         try {
             engine.start();

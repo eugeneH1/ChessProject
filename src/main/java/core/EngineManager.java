@@ -1,7 +1,7 @@
-package chess.core;
+package core;
 
-import chess.Launcher;
-import chess.core.utils.Consts;
+import core.utils.Consts;
+import test.Launcher;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
@@ -10,6 +10,7 @@ public class EngineManager {
     public static final long NANOSECOND = 1000000000L;
     public static final int FRAMERATE = 1000;
 
+
     private static int fps;
     private static float frametime = 1.0f / FRAMERATE;
 
@@ -17,11 +18,14 @@ public class EngineManager {
 
     private WindowManager window;
     private GLFWErrorCallback errorCallback;
+    private ILogic gameLogic;
 
     private void init() throws Exception {
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
         window = Launcher.getWindow();
+        gameLogic = Launcher.getGame();
         window.init();
+        gameLogic.init();
     }
 
     public void start() throws Exception {
@@ -77,16 +81,23 @@ public class EngineManager {
         isRunning = false;
     }
 
-    private void input() {}
+    private void input() {
+        gameLogic.input();
+    }
 
     private void render() {
+
+        gameLogic.render();
         window.update();
     }
 
-    private void update() {}
+    private void update() {
+        gameLogic.update();
+    }
 
     private void cleanUp() {
         window.cleanup();
+        gameLogic.cleanUp();
         errorCallback.free();
         GLFW.glfwTerminate();
     }

@@ -1,4 +1,4 @@
-package chess.core.utils;
+package core.utils;
 
 public class Consts {
     public static final String TITLE = "Chess";
