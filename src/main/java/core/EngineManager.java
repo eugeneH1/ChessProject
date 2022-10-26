@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 public class EngineManager {
 
     public static final long NANOSECOND = 1000000000L;
-    public static final int FRAMERATE = 1000;
+    public static final float FRAMERATE = 1000;
 
 
     private static int fps;
@@ -86,7 +86,6 @@ public class EngineManager {
     }
 
     private void render() {
-
         gameLogic.render();
         window.update();
     }
