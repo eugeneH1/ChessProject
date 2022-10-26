@@ -26,7 +26,6 @@ public class WindowManager {
         this.height = height;
         this.vSync = vSync;
         projectionMatrix = new Matrix4f();
-        this.window = window;
     }
 
     public boolean isResize() {
@@ -47,9 +46,10 @@ public class WindowManager {
 
     public void init() {
         GLFWErrorCallback.createPrint(System.err).set();
-
-        if(!GLFW.glfwInit())
+        if(!GLFW.glfwInit()){
             throw new IllegalStateException("Unable to initialize GLFW");
+        }
+
 
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GL11.GL_FALSE);

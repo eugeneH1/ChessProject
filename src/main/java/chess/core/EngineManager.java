@@ -1,6 +1,7 @@
 package chess.core;
 
 import chess.Launcher;
+import chess.core.utils.Consts;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
@@ -12,7 +13,7 @@ public class EngineManager {
     private static int fps;
     private static float frametime = 1.0f / FRAMERATE;
 
-    private boolean isRunning = true;
+    private boolean isRunning;
 
     private WindowManager window;
     private GLFWErrorCallback errorCallback;
@@ -27,7 +28,7 @@ public class EngineManager {
         init();
         if(isRunning)
             return;
-        else run();
+        run();
     }
 
     public void run() {
@@ -44,7 +45,7 @@ public class EngineManager {
             unprocessedTime += passedTime/ (double)NANOSECOND;
             framecounter += passedTime;
 
-            //input
+            input();
 
             while(unprocessedTime > frametime) {
                 render = true;
@@ -55,21 +56,19 @@ public class EngineManager {
 
                 if(framecounter >= NANOSECOND) {
                     setFps(frames);
-                    window.setTitle("Chess");
+                    window.setTitle(Consts.TITLE + " Fps: " + getFps());
                     frames = 0;
                     framecounter = 0;
                 }
-
-                if(render) {
-                    update();
-                    render();
-                    frames++;
-                }
             }
-            cleanUp();
 
+            if(render) {
+                update();
+                render();
+                frames++;
+            }
         }
-
+        cleanUp();
     }
 
     private void stop() {
