@@ -20,6 +20,7 @@ public class TestGame implements ILogic {
     private Model model;
 
     public TestGame() {
+
         renderer = new RenderManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();

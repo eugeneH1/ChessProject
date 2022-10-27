@@ -23,11 +23,11 @@ public class ShaderManager {
     public int createShader(String shaderCode, int shaderType) throws Exception {
         int shaderID = GL20.glCreateShader(shaderType);
         if(shaderID == 0)
-            throw new Exception("Faled to create shader Type: " + shaderType);
+            throw new Exception("Error creating shader.\nType: " + shaderType);
         GL20.glShaderSource(shaderID, shaderCode);
         GL20.glCompileShader(shaderID);
         if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == 0) {
-            throw new Exception("fuuuuuuuck " + shaderType + "\n" + GL20.glGetShaderInfoLog(shaderID, 1024));
+            throw new Exception("Error compiling shader.\n" + shaderType + ": " + GL20.glGetShaderInfoLog(shaderID, 1024));
         }
         GL20.glAttachShader(programID, shaderID);
         return shaderID;
@@ -36,7 +36,7 @@ public class ShaderManager {
     public void link() throws Exception {
         GL20.glLinkProgram(programID);
         if(GL20.glGetProgrami(programID, GL20.GL_LINK_STATUS) == 0)
-            throw new Exception("Error linking shader code " +"\n" + GL20.glGetProgramInfoLog(programID, 1024));
+            throw new Exception("Error linking shader code.\n " +"Info log: " + GL20.glGetProgramInfoLog(programID, 1024));
         if(vertexShaderID != 0) {
             GL20.glDetachShader(programID, vertexShaderID);
         }
@@ -44,8 +44,12 @@ public class ShaderManager {
             GL20.glDetachShader(programID, fragmentShaderID);
 
         GL20.glValidateProgram(programID);
-        if(GL20.glGetProgrami(programID, GL20.GL_VALIDATE_STATUS) == 0)
-            throw new Exception("Unable to validate shader code"+"\n" + GL20.glGetProgramInfoLog(programID, 1024));
+        System.out.println("ProgramID: " + programID);
+        System.out.println("lgGetProgrami: " + GL20.glGetProgrami(programID, GL20.GL_VALIDATE_STATUS));
+        if(GL20.glGetProgrami(programID, GL20.GL_VALIDATE_STATUS) == 0) {
+            System.out.println(GL20.glGetProgramInfoLog(programID, 1024));
+            //throw new Exception("Unable to validate shader code" + "\n" + GL20.glGetProgramInfoLog(programID, 1024));
+        }
     }
     public void bind() {
         GL20.glUseProgram(programID);
@@ -57,7 +61,7 @@ public class ShaderManager {
 
     public void cleanUp() {
         unbind();
-        if(programID == 0)
+        if(programID != 0)
             GL20.glDeleteProgram(programID);
     }
 }

@@ -50,28 +50,25 @@ public class WindowManager {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GL11.GL_FALSE);
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GL11.GL_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GL11.GL_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
         GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 3);
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
 
-        boolean maximised = true;
+        boolean maximised = false;
         if(width == 0 || height == 0) {
             width = 100;
             height = 100;
-            GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, 1); // TRUE
-            maximised = false;
+            GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, GLFW.GLFW_TRUE); // TRUE
+            maximised = true;
         }
         window = GLFW.glfwCreateWindow(width, height, title, MemoryUtil.NULL, MemoryUtil.NULL);
         if(window == MemoryUtil.NULL) {
             throw new RuntimeException("Failed to create window");
         }
-
 
         GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
             this.width = width;
@@ -89,7 +86,7 @@ public class WindowManager {
             GLFW.glfwMaximizeWindow(window);
         else {
             GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-            GLFW.glfwSetWindowPos(window, vidMode.width() - width /2, vidMode.height() - height /2);
+            GLFW.glfwSetWindowPos(window, (vidMode.width() - width) /2, (vidMode.height() - height) /2);
         }
 
         GLFW.glfwMakeContextCurrent(window);
